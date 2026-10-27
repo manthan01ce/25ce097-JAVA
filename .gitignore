@@ -1,0 +1,15 @@
+*.class
+*.war
+*.ear
+*.iml
+.idea/
+out/
+practical_list.txt
+# generated runtime data — do not commit
+data_p11/
+data_p14/
+practical_11/students.ser
+# keep lib jars (JUnit) but ignore app jars
+!practical_14/lib/*.jar
+minibank.jar
+manifest.txt

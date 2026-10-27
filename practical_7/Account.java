@@ -1,0 +1,71 @@
+import java.util.Objects;
+
+/**
+ * Practical 7 — Account base class with custom annotations.
+ * @Id marks the accountNumber field; @Positive marks balance.
+ */
+public abstract class Account {
+
+    @Id
+    private final String accountNumber;
+    private String ownerName;
+    @Positive(message = "balance must be positive")
+    private long balance;
+    private boolean active;
+
+    private static long accountCounter = 0;
+
+    private static String generateAccountNumber() {
+        accountCounter++;
+        return String.format("AC%04d", accountCounter);
+    }
+
+    public Account(String ownerName, long openingBalance) {
+        this.accountNumber = generateAccountNumber();
+        this.ownerName     = ownerName;
+        this.balance       = openingBalance;
+        this.active        = true;
+    }
+
+    public Account(String ownerName) {
+        this(ownerName, 0);
+    }
+
+    public abstract double interestRate();
+
+    public abstract boolean canWithdraw(long amount);
+
+    public void deposit(long amount) {
+        if (amount > 0) balance += amount;
+    }
+
+    public boolean withdraw(long amount) {
+        if (amount > 0 && canWithdraw(amount)) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public String getAccountNumber() { return accountNumber; }
+    public String getOwnerName()     { return ownerName; }
+    public long   getBalance()       { return balance; }
+    public boolean isActive()        { return active; }
+
+    @Override
+    public String toString() {
+        return accountNumber + " | " + ownerName + " | " + balance;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account a)) return false;
+        return accountNumber.equals(a.accountNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accountNumber);
+    }
+}
